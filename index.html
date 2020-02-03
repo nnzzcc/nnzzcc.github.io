@@ -1,0 +1,66 @@
+﻿<!DOCTYPE>
+<html>
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+        <title>TiledDynamicRESTLayer</title>
+        <style type="text/css">
+            body{
+                margin: 0;
+                overflow: hidden;
+                background: #fff;
+            }
+            #map{
+                position: relative;
+                height: 520px;
+                border:1px solid #3473b7;
+            }
+            #toolbar{
+                position: relative;
+                height: 33px;
+
+            }
+            #btn{
+                margin-top: 5px;
+            }
+        </style>
+        <script src='libs/SuperMap.Include.js'></script>
+       
+    </head>
+    <body>
+        <div id="toolbar">
+            <input id="btn" type="button" value="申请token" onclick="getToken()" />
+			<input id="btn1" type="button" value="配置token以加载地图" onclick="submitToken()" />
+			<label id="tokenLabel" style="color:red"/>
+        </div>
+        <div id="map"></div>
+         <script type="text/javascript">
+            var map, layer;
+            url="https://iserver.supermap.io/iserver/services/map-world/rest/maps/World";
+      
+                map = new SuperMap.Map("map",{controls: [
+                    new SuperMap.Control.ScaleLine(),
+                    new SuperMap.Control.Zoom(),
+                    new SuperMap.Control.Navigation({
+                        dragPanOptions: {
+                            enableKinetic: true
+                        }
+                    })],
+                   
+                });
+       
+              
+				
+               layer = new SuperMap.Layer.TiledDynamicRESTLayer("China",url, {transparent: true, cacheEnabled: true, redirect: false}, {maxResolution:"auto"});
+                layer.events.on({"layerInitialized": addLayer});
+            
+
+
+            function addLayer() {
+                var center = new SuperMap.LonLat(11733502.481499,4614406.969325);
+                map.addLayers([layer]);
+                map.setCenter(center, 3);
+            }
+
+        </script>
+    </body>
+</html>
