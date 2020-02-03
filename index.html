@@ -1,0 +1,321 @@
+﻿<!DOCTYPE>
+<html>
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+        <title>北京|新型肺炎疫情地图</title>
+        <style type="text/css">
+            body{
+                margin: 0;
+                overflow: hidden;
+                background: #fff;
+            }
+            
+             .legend {
+            position: absolute;
+            right: 10px;
+            top: 350px;
+            width: 250px;
+            text-align: center;
+            background: #FFF;
+            z-index: 999999;
+            top: 92%;
+            left: 5%;
+           
+        }
+         .legendItemHeader {
+            top: 5px;
+            width: 100px;
+            height: 18px;
+            text-align: center;
+        }
+
+        .legendItemValue {
+            top: 5px;
+            width: 120px;
+            text-align: center;
+            height: 18px;
+        }
+        .lab {
+            font-size: 35px;
+            position: absolute;
+         
+            bottom: 15%;
+        }
+        .numb {
+            font-size: 45px;
+            position: absolute;
+         
+            bottom: 37%;
+        }
+        #pop-content {
+            width: 180px;
+            text-align: center;
+            height: 200px;
+            
+        }
+        </style>
+        <script type="text/javascript" include="bootstrap,widgets.alert" src="js/include-web.js"></script>
+        <script type="text/javascript" exclude="iclient-classic" include="nanoscroller,infoWindow" src="dist/classic/include-classic.js"></script>
+      
+    </head>
+    <body>
+      
+        <div id="map" style="position: absolute;right: 0%;top: 30%;left: 0%;bottom: 0%;background-color:#FFF"></div>
+        <div id="list" style="position: absolute;right: 0%;top: 20%;left: 0%;bottom: 70%;background-color:#fff">
+            <label  class ='lab' style='left: 5%;'>确诊人数</label>
+            <label  class ='lab' style='left: 30%;'>疑似认识</label>
+            <label  class ='lab' style='left: 55%;'>死亡人数</label>
+            <label  class ='lab' style='left: 80%;'>治愈人数</label>
+            <label id="confirm" class ='numb' style='left: 7%;color: rgb(247, 76, 49);'>000</label>
+            <label id="suspect" class ='numb' style='left: 35%;color: rgb(247, 130, 7);'>0</label>
+            <label id="dead" class ='numb' style='left: 60%;color: rgb(93, 112, 146);'>0</label>
+            <label id="heal" class ='numb' style='left: 84%;color:rgb(40, 183, 163);'>00</label>
+        </div>
+        <div id="title" style="position: absolute;right: 0%;top: 0%;left: 0%;bottom: 80%;background-color:#d9edf7">
+            
+             <label style='font-size: 56px;position: absolute;left: 12%;bottom: 50%'>肺炎疫情实时动态播报(北京)</label>
+              <label style='font-size: 40px;position: absolute;left: 12%;bottom: 37%'>愿每个人健康</label>
+            <h2 style="position: absolute;left: 0%;bottom: 0%">数据来源：国家卫健委公开数据(腾讯新闻)</h2>
+        </div>
+
+        <div id="mapLegend" class="legend">
+        <div class="legendContent">
+        <table>
+        
+        <tr>
+        <td class="legendItemHeader">0</td>
+        <td class="legendItemValue" style="background: #FFFFFF"></td>
+        </tr>
+        <tr>
+        <td class="legendItemHeader">0-10</td>
+        <td class="legendItemValue" style="background: #FBD12A"></td>
+        </tr>
+        <tr>
+        <td class="legendItemHeader">10 - 20</td>
+        <td class="legendItemValue" style="background: #FE8800"></td>
+        </tr>
+        <tr>
+        <td class="legendItemHeader">20 - 30</td>
+        <td class="legendItemValue" style="background: #FF0000"></td>
+        </tr>
+        <tr>
+        <td class="legendItemHeader"> > 30</td>
+        <td class="legendItemValue" style="background: #CC0000"></td>
+        </tr>
+        </table>
+        </div>
+        </div>
+        <script type="text/javascript">
+            var map, layer,data,feature;
+            url="https://iserver.supermap.io/iserver/services/map-beijing/rest/maps/beijingMap";
+          
+      
+            map = new SuperMap.Map("map",{controls: [],});
+       
+              
+		    vectorLayer = new SuperMap.Layer.Vector("Vector Layer");
+            layer = new SuperMap.Layer.TiledDynamicRESTLayer("China",url, {transparent: true, cacheEnabled: true, redirect: false}, {maxResolution:"auto"});
+            layer.events.on({"layerInitialized": addLayer});
+
+            $.ajax({
+                url: 'https://view.inews.qq.com/g2/getOnsInfo?name=disease_h5',
+                dataType: 'jsonp',
+                scriptCharset: 'UTF-8',
+                jsonp: 'callback',
+                success: (res) => {
+                    data = JSON.parse(res.data);
+                    console.log(data.areaTree[0].children[11])
+                   
+                   
+                    $("#confirm").html(data.areaTree[0].children[11].total.confirm);
+                    $("#suspect").html(data.areaTree[0].children[11].total.suspect);
+                    $("#dead").html(data.areaTree[0].children[11].total.dead);
+                    $("#heal").html(data.areaTree[0].children[11].total.heal);
+                    data=data.areaTree[0].children[11].children;
+                }
+            });
+             var selectControl = new SuperMap.Control.SelectFeature(vectorLayer, {
+                onSelect: onFeatureSelect
+            });
+            map.addControl(selectControl);
+            selectControl.activate();
+
+            function addLayer() {
+                var center = new SuperMap.LonLat(12964084.1 , 4906087.1);
+                map.addLayers([layer,vectorLayer]);
+                map.setCenter(center, 0.1);
+            }
+            // 风格数组，设定分段范围对应的样式
+            style1 = {
+               
+                strokeColor: "#bbc4c7",
+                strokeWidth: 1,
+                fillColor: "#FFFFFF",
+                fillOpacity: "0.8"
+            },
+            style2 = {
+                
+                strokeColor: "#bbc4c7",
+                strokeWidth: 1,
+                fillColor: "#FBD12A",
+                fillOpacity: "0.8"
+            },
+            style3 = {
+                strokeColor: "#FE8800",
+                strokeWidth: 1,
+                fillColor: "#FE8800",
+                fillOpacity: "0.8"
+            },
+            style4 = {
+                strokeColor: "#FF0000",
+                strokeWidth: 1,
+                fillColor: "#FF0000",
+                fillOpacity: "0.8"
+            },
+            style5 = {
+                strokeColor: "#CC0000",
+                strokeWidth: 1,
+                fillColor: "#CC0000",
+                fillOpacity: "0.8"
+            },
+            
+
+
+            queryBySQL()
+            function queryBySQL() {
+                
+
+                var queryParam, queryBySQLParams, queryBySQLService;
+                queryParam = new SuperMap.REST.FilterParameter({
+                    name: "面区界R@北京",
+                    attributeFilter: "SMID>0"
+                });
+                queryBySQLParams = new SuperMap.REST.QueryBySQLParameters({
+                    queryParams: [queryParam]
+                });
+                queryBySQLService = new SuperMap.REST.QueryBySQLService(url, {
+                    eventListeners: {"processCompleted": processCompleted, "processFailed": processFailed}
+                });
+                queryBySQLService.processAsync(queryBySQLParams);
+            }
+             function processCompleted(queryEventArgs) {
+                var i, j,
+                    result = queryEventArgs.result;
+                    console.log(result)
+                 
+                    for (i = 0; i < result.recordsets.length; i++) {
+                        if (result.recordsets[i].features) {
+                            for (j = 0; j < result.recordsets[i].features.length; j++) {
+                                feature = result.recordsets[i].features[j];
+                                setcolor(feature.data.NAME);
+                               // feature.style = style2;
+                                vectorLayer.addFeatures(feature);
+                            }
+                        }
+                    }
+             
+            }
+            function setcolor(NAME){
+                
+
+                if(NAME.indexOf("县") >= 0){
+                    NAME.replace("县","区")
+                }
+
+                if(NAME=="延庆县"){
+                    NAME='延庆区'
+                }
+                if(NAME=="密云县"){
+                    NAME='密云区'
+                }
+                NAME = NAME.substring(0, NAME.lastIndexOf('区'));
+               console.log(NAME)
+                var people;
+                if(NAME=="崇文"){
+                    NAME='东城'
+                }
+                if(NAME=="宣武"){
+                    NAME='西城'
+                }
+                for (var i = 0 ; i < data.length; i++) {
+                    if(i==data.length-1){
+                        people=0;
+                        break
+                    }
+                    if(data[i].name==NAME){
+                       people= data[i].total.confirm
+                       break
+                    }
+                }
+                if(people==0){
+                    feature.style = style1
+                }else if(people>0&&people<=10){
+                    feature.style = style2
+                }else if(people>10&&people<=20){
+                    feature.style = style3
+                }else if(people>20&&people<=30){
+                    feature.style = style4
+                }else if(people>30){
+                    feature.style = style5
+                }
+                return people
+                   
+                
+                
+            }
+
+            function processFailed(e) {
+                widgets.alert.showAlert(e.error.errorMsg, false);
+            }
+
+            var infowin = null;
+
+            function onFeatureSelect(feature) {
+                closeInfoWin();
+                console.log(feature)
+                var p=setcolor(feature.data.NAME)
+                var name_qu=feature.data.NAME
+                if(name_qu=="崇文区"){
+                    name_qu='东城区'
+                }
+                if(name_qu=="宣武区"){
+                    name_qu='西城区'
+                }
+                var x=feature.geometry.bounds.right/2+feature.geometry.bounds.left/2;
+                var y=feature.geometry.bounds.top/2+feature.geometry.bounds.bottom/2;
+                var contentHTML = "<div id ='pop-content' overflow-y:hidden;'>";
+                contentHTML += "<div>" + "<label style=' font-size: 45px; top: 2%;'>"+name_qu+"</label><label  class ='lab' style='left: 22%; bottom: 2%;'>确诊人数</label><label id='confirm' class ='numb' style='left: 39%; bottom: 22%;color: rgb(247, 76, 49);'>"+p+"</label></div>" + "</div></div>";
+                var size = new SuperMap.Size(0, 33);
+                var offset = new SuperMap.Pixel(0, -size.h);
+                var icon = new SuperMap.Icon("./images/marker.png", size, offset);
+                var popup = new SuperMap.Popup.FramedCloud("popwin",
+                    new SuperMap.LonLat(x,y),
+                    null,
+                    contentHTML,
+                    icon,
+                    true);
+
+                infowin = popup;
+                map.addPopup(popup);
+                //添加弹窗到map图层
+                
+                var center = new SuperMap.LonLat(12964084.1 , 4906087.1);
+                map.setCenter(center, 0.1);
+               
+            }
+
+            // Feature取消选中事件响应
+            function closeInfoWin() {
+                if (infowin) {
+                    try {
+                        infowin.hide();
+                        infowin.destroy();
+                    }
+                    catch (e) {
+                    }
+                }
+           }
+
+        </script>
+    </body>
+</html>

@@ -1,0 +1,983 @@
+<!--********************************************************************
+* Copyright© 2000 - 2019 SuperMap Software Co.Ltd. All rights reserved.
+*********************************************************************-->
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8" />
+		<title>SuperMap iClient JavaScript 9D(2019)</title>
+		<link rel="shortcut icon" type="image/x-icon" href="img/favicon.ico" />
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+		<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0,user-scalable=no" />
+		<meta
+			name="keywords"
+			content="SuperMap，超图，iClient,iClient 9D,iClient 9D(2019),SuperMap iClient,
+    iClient JavaScript,iClient for Leaflet,iClient for OpenLayers,iClient for MapboxGL"
+		/>
+		<meta
+			name="description"
+			content="云GIS网络客户端开发平台。SuperMap云GIS和在线GIS平台系列产品的统一JS客户端。
+    集成了领先的开源地图库、可视化库，且核心代码以Apache2协议完全开源，连接了SuperMap与开源社区。
+    提供了全新的大数据可视化、数据流可视化功能，通过本产品可快速实现浏览器和移动端上美观、流畅的地图呈现与空间分析。"
+		/>
+		<script type="text/javascript" exclude="common" include="animate.css" src="./js/include.js"></script>
+		<link rel="stylesheet" href="./css/common.css" />
+		<link rel="stylesheet" href="./css/index.css" />
+		<link rel="stylesheet" href="./css/header.css" />
+	</head>
+
+	<body class="hold-transition skin-blue sidebar-mini">
+		<!--顶部导航-->
+		<header class="header-wrapper main-header icl-header"></header>
+		<script>
+			var navigation = {
+				nav: {
+					title: 'SuperMap iClient JavaScript 9D(2019)',
+					path: '../web/',
+					isLocal: window.isLocal,
+				},
+			};
+			identification = {};
+			utils.loadTemplate('.icl-header', './template/header.html', navigation);
+		</script>
+		<!--顶部导航 end-->
+
+		<!--巨幕区域-->
+		<header class="header-home">
+			<div class="container">
+				<div class="row">
+					<!-- 左边的图片 -->
+					<!-- 在class中加入hidden-xs可以在小屏幕时将图片隐藏-->
+					<div class="col-md-4 col-md-offset-1 col-sm-5 animated fadeIn banner">
+						<img src="./img/banner.png" alt="header-img" class="img-responsive center-block" />
+					</div>
+					<!-- 右边的文字 -->
+					<div class="header-description animated fadeIn">
+						<div class="col-md-6 col-md-offset-1 col-sm-6 col-sm-offset-1" id="header2-text">
+							<h3 class="tc pt50">云 GIS 网络客户端开发平台</h3>
+						</div>
+						<!-- 右边的链接按钮 -->
+						<div class="row col-md-6 col-sm-6 col-sm-offset-1" style="padding-left:0px">
+							<div class="col-sm-6 col-xs-6" id="button_zip">
+								<a class="radiusBtn" href="download/download.html">
+									<img src="./img/packageIcon.png" style="height: 20px;width: 20px" /> 下载 iClient
+								</a>
+							</div>
+							<div class="col-sm-6 col-xs-6" id="button_sourceCode">
+								<a
+									class="radiusBtn"
+									href="https://github.com/SuperMap/iClient-JavaScript"
+									target="_blank"
+								>
+									<img src="./img/sourcecodeIcon.png" style="height: 20px;width: 20px" />&nbsp;source
+									code</a
+								>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</header>
+		<!--巨幕区域 end-->
+
+		<!--内容区域-->
+		<div class="container animated fadeInUpBig">
+			<div class="row">
+				<div class="col-md-1" role="main"></div>
+				<div class="col-md-10" role="main">
+					<div class="bs-docs-section">
+						<p class="lead" data-aos="fade-down" data-aos-easing="linear" data-aos-duration="500">
+							SuperMap iClient JavaScript 9D(2019) 是云 GIS 网络客户端开发平台。基于现代 Web
+							技术栈全新构建，是 SuperMap 云 GIS 和在线 GIS 平台系列产品的统一 JavaScript
+							客户端。集成了领先的开源地图库和可视化库，且核心代码以 Apache License 2.0
+							协议完全开源，连接了 SuperMap
+							与开源社区。提供了全新的大数据可视化和数据流可视化功能，通过本产品可快速实现浏览器和移动端上美观、流畅的地图呈现与空间分析。
+						</p>
+						<!--特性-->
+						<div class="attributes">
+							<div class="row feature">
+								<div class="col-lg-7">
+									<h2 class="feature-heading">开源产品的上佳实践</h2>
+
+									<p class="feature-text">
+										全面对接集成了 <a target="_blank" href="http://leafletjs.com">Leaflet</a>、<a
+											target="_blank"
+											href="https://openlayers.org/"
+											>OpenLayers</a
+										>、
+										<a target="_blank" href="https://www.mapbox.com/mapbox-gl-js/api/"
+											>Mapbox GL JS</a
+										>、 <a target="_blank" href="http://echarts.baidu.com/">ECharts</a>、
+										<a target="_blank" href="http://mapv.baidu.com/">MapV</a>、
+										<a target="_blank" href="http://deck.gl/">DECK.GL</a>
+										等常用的地图库和图表库，避免用户的重复学习和成本投入
+									</p>
+								</div>
+								<div class="col-lg-5 image-class">
+									<img
+										class="feature-image img-fluid"
+										src="./img/0.png"
+										alt="Generic placeholder image"
+									/>
+								</div>
+							</div>
+
+							<hr class="feature-divider" />
+
+							<div class="row feature">
+								<div class="col-lg-7 push-lg-5">
+									<h2 class="feature-heading">Modern WebGIS</h2>
+
+									<p class="feature-text">
+										基于 H5、WebGL、WebSocket、ES6、RequireJS、npm 等现代 Web 技术栈，完全重建
+									</p>
+								</div>
+								<div class="col-lg-5 pull-lg-7 image-class">
+									<img
+										class="feature-image img-fluid"
+										src="./img/1.png"
+										alt="Generic placeholder image"
+									/>
+								</div>
+							</div>
+
+							<hr class="feature-divider" />
+
+							<div class="row feature">
+								<div class="col-lg-7">
+									<h2 class="feature-heading">开放架构、开源内核</h2>
+
+									<p class="feature-text">
+										SuperMap iClient JavaScript 9D(2019) 核心源代码基于
+										<a
+											target="_blank"
+											href="https://github.com/SuperMap/iClient-JavaScript/blob/master/LICENSE"
+											>Apache License 2.0</a
+										>
+										开源许可协议发布，可在
+										<a target="_blank" href="https://github.com/SuperMap/iClient-JavaScript"
+											>GitHub</a
+										>、<a target="_blank" href="https://git.oschina.net/isupermap/iClient9"
+											>OSChina </a
+										>自由下载和分发使用
+									</p>
+								</div>
+								<div class="col-lg-5 image-class">
+									<img
+										class="feature-image img-fluid"
+										src="img/2.png"
+										alt="Generic placeholder image"
+									/>
+								</div>
+							</div>
+
+							<hr class="feature-divider" />
+
+							<div class="row feature">
+								<div class="col-lg-7 push-lg-5">
+									<h2 class="feature-heading">大数据可视化</h2>
+
+									<p class="feature-text">
+										为 SuperMap iServer 的分布式分析服务、数据流服务等提供统一的 API
+										和可视化呈现，同时支持海量数据的热力图、蜂巢图、格网图、散点图、矢量瓦片等多种可视化渲染方式
+									</p>
+								</div>
+								<div class="col-lg-5 pull-lg-7 image-class">
+									<img
+										class="feature-image img-fluid"
+										src="./img/3.png"
+										alt="Generic placeholder image"
+									/>
+								</div>
+							</div>
+
+							<hr class="feature-divider" />
+
+							<div class="row feature">
+								<div class="col-lg-7">
+									<h2 class="feature-heading">更加简单易用</h2>
+
+									<p class="feature-text">
+										统一 SuperMap iServer、iEdge、iPortal、iManager、Online
+										的服务访问和安全认证接口，为用户提供更加简单易用的 API 以及更多功能支持
+									</p>
+								</div>
+								<div class="col-lg-5 image-class">
+									<img
+										class="feature-image img-fluid"
+										src="./img/4.png"
+										alt="Generic placeholder image"
+									/>
+								</div>
+							</div>
+						</div>
+						<!--特性结束-->
+
+						<!--产品链接-->
+						<div class="productsLink">
+							<div class="row">
+								<div class="g-heading-v10 g-mb-65 text-center">
+									<h1 class="first_title"><b>Libraries</b></h1>
+
+									<div class="separator_wrapper">
+										<i style="font-style: normal">What We Can Offer you</i>
+									</div>
+								</div>
+							</div>
+
+							<div class="row">
+								<div class="col-md-4 col-sm-4 bundle text-center bundle-region bundle-region-hl">
+									<div class="bundle-wrapper">
+										<div class="productsBox">
+											<div class="productsTitleBox">
+												iClient for Leaflet
+											</div>
+											<div class="productsBodyBox">
+												<div class="productsBodyOne">
+													<i class="fa fa-leaf"></i>
+												</div>
+												<p class="productsBodyTwo">
+													基于 <b>Leaflet</b> 的 GIS 客户端应用程序开发工具
+												</p>
+											</div>
+											<a href="./introduction/leaflet.html" target="_blank">
+												<div class="productsFooterBox">
+													<b>介绍&nbsp;»</b>
+												</div>
+											</a>
+											<a href="../examples/leaflet/examples.html" target="_blank">
+												<div class="productsFooterBox">
+													<b>示 例&nbsp;»</b>
+												</div>
+											</a>
+										</div>
+									</div>
+								</div>
+								<div class="col-md-4 col-sm-4 bundle text-center bundle-region bundle-region-hl">
+									<div class="bundle-wrapper">
+										<div class="productsBox">
+											<div class="productsTitleBox">
+												iClient for OpenLayers
+											</div>
+											<div class="productsBodyBox">
+												<div class="productsBodyOne">
+													<i class="fa fa-rocket"></i>
+												</div>
+												<p class="productsBodyTwo">
+													基于 <b>OpenLayers</b> 的 GIS 客户端应用程序开发工具
+												</p>
+											</div>
+											<a href="./introduction/openlayers.html" target="_blank">
+												<div class="productsFooterBox">
+													<b>介绍&nbsp;»</b>
+												</div>
+											</a>
+											<a href="../examples/openlayers/examples.html" target="_blank">
+												<div class="productsFooterBox">
+													<b>示 例&nbsp;»</b>
+												</div>
+											</a>
+										</div>
+									</div>
+								</div>
+								<div class="col-md-4 col-sm-4 bundle text-center bundle-region bundle-region-hl">
+									<div class="bundle-wrapper">
+										<div class="productsBox">
+											<div class="productsTitleBox">
+												iClient for MapboxGL
+											</div>
+											<div class="productsBodyBox">
+												<div class="productsBodyOne">
+													<i class="fa fa-map-o"></i>
+												</div>
+												<p class="productsBodyTwo">
+													基于 <b>MapboxGL</b> 的 GIS 客户端应用程序开发工具
+												</p>
+											</div>
+											<a href="./introduction/mapboxgl.html" target="_blank">
+												<div class="productsFooterBox">
+													<b>介绍&nbsp;»</b>
+												</div>
+											</a>
+											<a href="../examples/mapboxgl/examples.html" target="_blank">
+												<div class="productsFooterBox">
+													<b>示 例&nbsp;»</b>
+												</div>
+											</a>
+										</div>
+									</div>
+								</div>
+							</div>
+							<div class="row">
+								<div class="col-lg-2 col-md-2"></div>
+								<div class="col-md-4 col-sm-4 bundle text-center bundle-region bundle-region-hl">
+									<div class="bundle-wrapper">
+										<div class="productsBox">
+											<div class="productsTitleBox">
+												iClient Classic
+											</div>
+											<div class="productsBodyBox">
+												<div class="productsBodyOne">
+													<i class="fa fa-lightbulb-o"></i>
+												</div>
+												<p class="productsBodyTwo">
+													基于 <b>SuperMap iClient 8C</b> 的 GIS 客户端应用程序开发工具
+												</p>
+											</div>
+											<a href="./introduction/classic.html" target="_blank">
+												<div class="productsFooterBox">
+													<b>介绍&nbsp;»</b>
+												</div>
+											</a>
+											<a href="../examples/classic/examples.html" target="_blank">
+												<div class="productsFooterBox">
+													<b>示 例&nbsp;»</b>
+												</div>
+											</a>
+										</div>
+									</div>
+								</div>
+								<div class="col-md-4 col-sm-4 bundle text-center bundle-region bundle-region-hl">
+									<div class="bundle-wrapper">
+										<div class="productsBox">
+											<div class="productsTitleBox">
+												iClient 3D-WebGL
+											</div>
+											<div class="productsBodyBox">
+												<div class="productsBodyOne">
+													<i class="fa fa-globe"></i>
+												</div>
+												<p class="productsBodyTwo">
+													基于 <b>Cesium</b> 开源框架，面向
+													<b>HTML5</b> 的三维应用程序开发工具
+												</p>
+											</div>
+											<a href="./introduction/3dwebgl.html" target="_blank">
+												<div class="productsFooterBox">
+													<b>介绍&nbsp;»</b>
+												</div>
+											</a>
+											<a href="../examples/3dwebgl/examples.html" target="_blank">
+												<div class="productsFooterBox">
+													<b>示 例&nbsp;»</b>
+												</div>
+											</a>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+						<!--产品链接结束-->
+
+						<!--新特性-->
+						<div class="new-attributes">
+							<div class="g-heading-v10 g-mb-65 text-center">
+								<h1 class="first_title"><b>WHAT'S NEW</b></h1>
+								<div class="separator_wrapper">
+									<i class="fa fa-question-circle-o" style="color: #C70022"></i>
+								</div>
+							</div>
+							<!--912 新特性-->
+							<div style="font-weight: bold;font-size:18px;color:#C70022">
+								9.1.2 <span style="vertical-align: super;font-size:10px"></span>
+							</div>
+							<div class="panel-body">
+								<div class="news-list">
+									<div class="news-item-img">
+										<div class="news-box-img">
+											<div
+												class="news-img"
+												style='background: no-repeat center / cover url("./img/whatsNewLandUse.png");background-size: contain;'
+											>
+												<a
+													href="../examples/mapboxgl/editor.html#widgets_demo_vue"
+													target="_blank"
+												></a>
+											</div>
+											<div class="news-info-container">
+												<div class="news-info-title">
+													<div class="news-title-href">
+														<a
+															href="../examples/mapboxgl/editor.html#widgets_demo_vue"
+															style="color: inherit; font-size: inherit; font-weight: inherit;"
+															target="_blank"
+															>iClient for MapboxGL 新增微件（for vue）</a
+														>
+													</div>
+												</div>
+												<p class="new-attributes_content">
+													新增 WebMap 地图微件，图表微件，图例微件，图层列表微件，量算微件，查询/搜索微件，进度条等基础微件，支持多种主题（可一键切换风格）
+												</p>
+											</div>
+										</div>
+									</div>
+								</div>
+							</div>
+							<!--912 新特性结束-->
+							<!--911 新特性-->
+							<div style="font-weight: bold;font-size:18px;color:#C70022">
+								9.1.1 <span style="vertical-align: super;font-size:10px"></span>
+							</div>
+							<div class="panel-body">
+								<div class="news-list">
+									<div class="news-item-img">
+										<div class="news-box-img">
+											<div
+												class="news-img"
+												style='background: no-repeat center / cover url("./img/whatsNewMultiCoordinate.png")'
+											>
+												<a
+													href="../examples/mapboxgl/editor.html#markerCluster_4326"
+													target="_blank"
+												></a>
+											</div>
+											<div class="news-info-container">
+												<div class="news-info-title">
+													<div class="news-title-href">
+														<a
+															href="../examples/mapboxgl/editor.html#markerCluster_4326"
+															style="color: inherit; font-size: inherit; font-weight: inherit;"
+															target="_blank"
+															>iClient for MapboxGL多坐标系支持</a
+														>
+													</div>
+												</div>
+												<p class="new-attributes_content">
+													新增支持WGS84、China2000、Xian80、Beijing54等标准地理坐标系，覆盖MVT矢量瓦片、栅格瓦片、可视化图层、标绘等功能<br />
+													需单独引用iClient对Mapbox GL JS的增强库（基于2018年10月版本v0.51.0）
+												</p>
+											</div>
+										</div>
+									</div>
+									<div class="news-item-img">
+										<div class="news-box-img">
+											<div
+												class="news-img"
+												style='background: no-repeat center / cover url("./img/whatsNewWidgets.png")'
+											>
+												<a
+													href="../examples/leaflet/editor.html#widgets_clientComputation"
+													target="_blank"
+												></a>
+											</div>
+											<div class="news-info-container">
+												<div class="news-info-title">
+													<div class="news-title-href">
+														<a
+															href="../examples/leaflet/editor.html#widgets_clientComputation"
+															style="color: inherit; font-size: inherit; font-weight: inherit;"
+															target="_blank"
+															>新增多款功能微件</a
+														>
+													</div>
+												</div>
+												<p class="new-attributes_content">
+													新增文件打开微件、数据流微件、地址匹配与图层查询微件、客户端计算微件、分布式分析微件、数据服务查询微件
+												</p>
+											</div>
+										</div>
+									</div>
+								</div>
+							</div>
+							<!--911 新特性结束-->
+							<!--910 新特性-->
+							<div style="font-weight: bold;font-size:18px;color:#C70022">
+								9.1.0 <span style="vertical-align: super;font-size:10px"></span>
+							</div>
+							<div class="panel-body">
+								<div class="news-list">
+									<div class="news-item-img">
+										<div class="news-box-img">
+											<div
+												class="news-img"
+												style='background: no-repeat center url("./img/whatsNewNewyorkTaxi.gif")'
+											>
+												<a
+													href="../examples/leaflet/editor.html#12_graphiclayer_webgl"
+													target="_blank"
+												></a>
+											</div>
+											<div class="news-info-container">
+												<div class="news-info-title">
+													<div class="news-title-href">
+														<a
+															href="../examples/leaflet/editor.html#12_graphiclayer_webgl"
+															style="color: inherit; font-size: inherit; font-weight: inherit;"
+															target="_blank"
+															>高效率点图层渲染性能升级</a
+														>
+													</div>
+												</div>
+												<p class="new-attributes_content">
+													高效率点图层支持数据量由之前的30万提升至100万<br />
+													性能提升至3倍以上，百万点数据1秒内完成渲染<br />
+													并支持 GeoJSON，TopoJSON，二维表等多种数据格式<br />
+													支持修改样式，支持属性筛选、鼠标事件等交互操作
+												</p>
+											</div>
+										</div>
+									</div>
+									<div class="news-item-img">
+										<div class="news-box-img">
+											<div
+												class="news-img"
+												style='background: no-repeat center url("./img/whatsNewdataflowlayer.gif")'
+											>
+												<a
+													href="../examples/leaflet/editor.html#dataFlowService_mapv"
+													target="_blank"
+												></a>
+											</div>
+											<div class="news-info-container">
+												<div class="news-info-title">
+													<div class="news-title-href">
+														<a
+															href="../examples/leaflet/editor.html#dataFlowService_mapv"
+															style="color: inherit; font-size: inherit; font-weight: inherit;"
+															target="_blank"
+															>数据流图层渲染性能升级</a
+														>
+													</div>
+												</div>
+												<p class="new-attributes_content">
+													数据流图层新增 MapV 引擎，绘制 Marker 的性能大幅提升<br />
+													矢量点渲染数据量由1万提升至10万<br />
+													栅格图片渲染数据量由3000提升至1万
+												</p>
+											</div>
+										</div>
+									</div>
+									<div class="news-item-img">
+										<div class="news-box-img">
+											<div
+												class="news-img"
+												style='background: no-repeat center url("./img/whatsNewEchartsBejingRoads.gif")'
+											>
+												<a
+													href="../examples/leaflet/editor.html#echarts_linesDrawMillionsBeijingRoadsNetwork"
+													target="_blank"
+												></a>
+											</div>
+											<div class="news-info-container">
+												<div class="news-info-title">
+													<div class="news-title-href">
+														<a
+															href="../examples/leaflet/editor.html#echarts_linesDrawMillionsBeijingRoadsNetwork"
+															style="color: inherit; font-size: inherit; font-weight: inherit;"
+															target="_blank"
+															>对接最新 ECharts，渲染千万级数据</a
+														>
+													</div>
+												</div>
+												<p class="new-attributes_content">
+													对接最新 ECharts 4.1.0，新增增量渲染能力，支持千万级数据的可视化渲染
+												</p>
+											</div>
+										</div>
+									</div>
+									<div class="news-item-img">
+										<div class="news-box-img">
+											<div
+												class="news-img"
+												style='background: no-repeat center url("./img/whatsNewMvtvectorlayerMbstyleLanduse.png")'
+											>
+												<a
+													href="../examples/openlayers/editor.html#mvtvectorlayer_mbstyle_landuse"
+													target="_blank"
+												></a>
+											</div>
+											<div class="news-info-container">
+												<div class="news-info-title">
+													<div class="news-title-href">
+														<a
+															href="../examples/openlayers/editor.html#mvtvectorlayer_mbstyle_landuse"
+															style="color: inherit; font-size: inherit; font-weight: inherit;"
+															target="_blank"
+															>MVT 矢量瓦片支持多种坐标系
+														</a>
+													</div>
+												</div>
+												<p class="new-attributes_content">
+													基于 Mapbox GL JS、OpenLayers 等地图库，实现对 Mapbox Vector
+													Tile(MVT) 矢量瓦片开放标准的支持<br />
+													可交互、可在线编辑的地图风格，更换样式无需反复制图、重新切片<br />
+													支持 Web Mercator、WGS84、China2000 等标准坐标系
+												</p>
+											</div>
+										</div>
+									</div>
+									<div class="news-item-img">
+										<div class="news-box-img">
+											<div
+												class="news-img"
+												style='background: no-repeat center url("./img/whatsNewMoreVisualzation.gif")'
+											>
+												<a
+													href="../examples/mapboxgl/editor.html#deckglLayer_sfcontour"
+													target="_blank"
+												></a>
+											</div>
+											<div class="news-info-container">
+												<div class="news-info-title">
+													<div class="news-title-href">
+														<a
+															href="../examples/mapboxgl/editor.html#deckglLayer_sfcontour"
+															style="color: inherit; font-size: inherit; font-weight: inherit;"
+															target="_blank"
+															>更多优秀可视化特效
+														</a>
+													</div>
+												</div>
+												<p class="new-attributes_content">
+													新增 DECK.GL、ECharts、ECharts GL 的更多特效和范例
+												</p>
+											</div>
+										</div>
+									</div>
+									<div class="news-item-img">
+										<div class="news-box-img">
+											<div
+												class="news-img"
+												style='background: no-repeat center url("./img/whatsNewDynamicPlotting.gif")'
+											>
+												<a
+													href="../examples/leaflet/editor.html#plot_dynamicPlot"
+													target="_blank"
+												></a>
+											</div>
+											<div class="news-info-container">
+												<div class="news-info-title">
+													<div class="news-title-href">
+														<a
+															href="../examples/leaflet/editor.html#plot_dynamicPlot"
+															style="color: inherit; font-size: inherit; font-weight: inherit;"
+															target="_blank"
+															>二维动态标绘
+														</a>
+													</div>
+												</div>
+												<p class="new-attributes_content">
+													基于 Leaflet 地图库，提供灵活方便的二维动态标绘功能<br />
+													包含7种经典动画的态势推演功能<br />
+													提供便捷的态势图管理功能
+												</p>
+											</div>
+										</div>
+									</div>
+									<div class="news-item-img">
+										<div class="news-box-img">
+											<div
+												class="news-img"
+												style='background: no-repeat center url("./img/whatsNewApi.png")'
+											>
+												<a href="./apis/leaflet.html" target="_blank"></a>
+											</div>
+											<div class="news-info-container">
+												<div class="news-info-title">
+													<div class="news-title-href">
+														<a
+															href="./apis/leaflet.html"
+															style="color: inherit; font-size: inherit; font-weight: inherit;"
+															target="_blank"
+															>API 文档优化</a
+														>
+													</div>
+												</div>
+												<p class="new-attributes_content">
+													优化 API 文档<br />
+													整理文档内容、优化文档显示格式、完善接口参数及其使用描述<br />
+													极大的提升文档的可读性与实用性
+												</p>
+											</div>
+										</div>
+									</div>
+								</div>
+							</div>
+							<!--910 新特性结束-->
+							<!--901新特性-->
+							<div style="font-weight: bold;font-size:18px;color:#C70022">9.0.1</div>
+							<div class="panel-body">
+								<div class="news-list">
+									<div class="news-item">
+										<div class="decoration">
+											<div class="news-circle">
+												<div class="solid-circle"></div>
+											</div>
+										</div>
+										<div class="news-box">
+											<p class="new-attributes_content">
+												集成Turf.js，提供空间分析、拓扑分析、等值分析、量算等客户端计算能力，
+												无需连接GIS服务也可在客户端快速的进行各种常用的空间操作
+											</p>
+										</div>
+									</div>
+									<div class="news-item">
+										<div class="decoration">
+											<div class="news-circle">
+												<div class="solid-circle"></div>
+											</div>
+										</div>
+										<div class="news-box">
+											<p class="new-attributes_content">
+												集成 ECharts / ECharts GL / D3.js
+												可视化库的三维专题图、风图等更多特效，在9D版本的基础上继续加强炫酷的可视化效果
+											</p>
+										</div>
+									</div>
+									<div class="news-item">
+										<div class="decoration">
+											<div class="news-circle">
+												<div class="solid-circle"></div>
+											</div>
+										</div>
+										<div class="news-box">
+											<p class="new-attributes_content">
+												进行了代码模块化，支持开发时使用 JavaScript ES6 标准的 import
+												语法进行模块化引入
+											</p>
+										</div>
+									</div>
+									<div class="news-item">
+										<div class="decoration">
+											<div class="news-circle">
+												<div class="solid-circle"></div>
+											</div>
+										</div>
+										<div class="news-box">
+											<p class="new-attributes_content">
+												发布npm项目，地址：<a
+													target="_blank"
+													href="https://www.npmjs.com/~supermap"
+													style="color:#191970"
+													>https://www.npmjs.com/~supermap</a
+												>
+											</p>
+										</div>
+									</div>
+									<div class="news-item">
+										<div class="decoration">
+											<div class="news-circle">
+												<div class="solid-circle"></div>
+											</div>
+										</div>
+										<div class="news-box">
+											<p class="new-attributes_content">
+												发布英文版本，官网的产品介绍、范例、APIDoc等页面同时对中英双语进行支持
+											</p>
+										</div>
+									</div>
+									<div class="news-item">
+										<div class="decoration">
+											<div class="news-circle">
+												<div class="solid-circle"></div>
+											</div>
+										</div>
+										<div class="news-box">
+											<p class="new-attributes_content">
+												官网优化：多版本支持（9.0.0/9.0.1/dev）、导航更轻松、优化范例等待、弹窗样式等
+											</p>
+										</div>
+									</div>
+								</div>
+							</div>
+							<!--901新特性结束-->
+							<!--900新特性-->
+							<div style="font-weight: bold;font-size:18px;color:#C70022">9.0.0</div>
+							<div class="panel-body">
+								<div class="news-list">
+									<div class="news-item">
+										<div class="decoration">
+											<div class="news-circle">
+												<div class="solid-circle"></div>
+											</div>
+										</div>
+										<div class="news-box">
+											<p class="new-attributes_content">
+												完成了基础设施重建，完全开源 + 开放，全面对接集成了
+												Leaflet、OpenLayers、Mapbox GL JS、ECharts、MapV
+												等常用的地图库和制图制表库，避免用户的重复学习和成本投入
+											</p>
+										</div>
+									</div>
+									<div class="news-item">
+										<div class="decoration">
+											<div class="news-circle">
+												<div class="solid-circle"></div>
+											</div>
+										</div>
+										<div class="news-box">
+											<p class="new-attributes_content">
+												支持访问 SuperMap iServer
+												的分布式分析服务，提供密度分析、格网聚合分析、单对象查询分析、区域汇总分析、矢量剪裁分析、缓冲区分析、拓扑检查分析、叠加分析、属性汇总分析功能
+											</p>
+										</div>
+									</div>
+									<div class="news-item">
+										<div class="decoration">
+											<div class="news-circle">
+												<div class="solid-circle"></div>
+											</div>
+										</div>
+										<div class="news-box">
+											<p class="new-attributes_content">
+												支持访问 SuperMap iServer 的地址匹配服务，提供正向匹配和反向匹配功能
+											</p>
+										</div>
+									</div>
+									<div class="news-item">
+										<div class="decoration">
+											<div class="news-circle">
+												<div class="solid-circle"></div>
+											</div>
+										</div>
+										<div class="news-box">
+											<p class="new-attributes_content">
+												支持访问 SuperMap iServer 的数据流服务
+											</p>
+										</div>
+									</div>
+									<div class="news-item">
+										<div class="decoration">
+											<div class="news-circle">
+												<div class="solid-circle"></div>
+											</div>
+										</div>
+										<div class="news-box">
+											<p class="new-attributes_content">
+												新增基于 Elasticsearch 的时序热力图、航班监控等可视化效果
+											</p>
+										</div>
+									</div>
+									<div class="news-item">
+										<div class="decoration">
+											<div class="news-circle">
+												<div class="solid-circle"></div>
+											</div>
+										</div>
+										<div class="news-box">
+											<p class="new-attributes_content">
+												支持 Mapbox
+												矢量瓦片标准，为用户提供了更多可在客户端自由更改样式的地图风格
+											</p>
+										</div>
+									</div>
+									<div class="news-item">
+										<div class="decoration">
+											<div class="news-circle">
+												<div class="solid-circle"></div>
+											</div>
+										</div>
+										<div class="news-box">
+											<p class="new-attributes_content">
+												新增高效率点图层，支持10万+点要素在浏览器端高效流畅的绘制
+											</p>
+										</div>
+									</div>
+									<div class="news-item">
+										<div class="decoration">
+											<div class="news-circle">
+												<div class="solid-circle"></div>
+											</div>
+										</div>
+										<div class="news-box">
+											<p class="new-attributes_content">
+												集成 ECharts
+												常用可视化效果：散点地图、迁徙图、热力图、线路图、线特效、折线图、柱状图、饼图
+											</p>
+										</div>
+									</div>
+									<div class="news-item">
+										<div class="decoration">
+											<div class="news-circle">
+												<div class="solid-circle"></div>
+											</div>
+										</div>
+										<div class="news-box">
+											<p class="new-attributes_content">
+												集成数据可视化开源库
+												MapV，提供蜂巢图、通勤图、强边界图、迁徙图、动态轨迹图、面绘制、线绘制以及海量点数据的绘制
+											</p>
+										</div>
+									</div>
+									<div class="news-item">
+										<div class="decoration">
+											<div class="news-circle">
+												<div class="solid-circle"></div>
+											</div>
+										</div>
+										<div class="news-box">
+											<p class="new-attributes_content">
+												集成 OSMBuildings，实现建筑立体效果可视化
+											</p>
+										</div>
+									</div>
+									<div class="news-item">
+										<div class="decoration">
+											<div class="news-circle">
+												<div class="solid-circle"></div>
+											</div>
+										</div>
+										<div class="news-box">
+											<p class="new-attributes_content">
+												新增缓存切换控件，支持用户在客户端进行多版本缓存切换
+											</p>
+										</div>
+									</div>
+									<div class="news-item">
+										<div class="decoration">
+											<div class="news-circle">
+												<div class="solid-circle"></div>
+											</div>
+										</div>
+										<div class="news-box">
+											<p class="new-attributes_content">
+												更简单的访问 SuperMap iPortal 和 SuperMap Online 中用户配置的地图
+											</p>
+										</div>
+									</div>
+									<div class="news-item">
+										<div class="decoration">
+											<div class="news-circle">
+												<div class="solid-circle"></div>
+											</div>
+										</div>
+										<div class="news-box">
+											<p class="new-attributes_content">
+												统一 SuperMap iServer、SuperMap iPortal、SuperMap Online
+												的安全认证接口，支持安全登录，支持以 token 或 key 的方式访问服务或地图
+											</p>
+										</div>
+									</div>
+									<div class="news-item">
+										<div class="decoration">
+											<div class="news-circle">
+												<div class="solid-circle"></div>
+											</div>
+										</div>
+										<div class="news-box">
+											<p class="new-attributes_content">
+												全新的站点：iclient.supermapol.com，更加易用的示例演示
+											</p>
+										</div>
+									</div>
+								</div>
+							</div>
+							<!--900新特性结束-->
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<!--内容区域 end-->
+
+		<!--footer -->
+		<div class="main-footer icl-footer"></div>
+		<script>
+			utils.loadTemplate('.icl-footer', './template/footer.html', navigation);
+		</script>
+		<!--footer end-->
+
+		<script type="text/javascript" src="./js/common.js"></script>
+	</body>
+</html>
