@@ -63,7 +63,7 @@
         <div id="map" style="position: absolute;right: 0%;top: 30%;left: 0%;bottom: 0%;background-color:#FFF"></div>
         <div id="list" style="position: absolute;right: 0%;top: 20%;left: 0%;bottom: 70%;background-color:#fff">
             <label  class ='lab' style='left: 5%;'>确诊人数</label>
-            <label  class ='lab' style='left: 30%;'>疑似认识</label>
+            <label  class ='lab' style='left: 30%;'>疑似人数</label>
             <label  class ='lab' style='left: 55%;'>死亡人数</label>
             <label  class ='lab' style='left: 80%;'>治愈人数</label>
             <label id="confirm" class ='numb' style='left: 7%;color: rgb(247, 76, 49);'>000</label>
@@ -88,19 +88,19 @@
         </tr>
         <tr>
         <td class="legendItemHeader">0-10</td>
-        <td class="legendItemValue" style="background: #FBD12A"></td>
+        <td class="legendItemValue" style="background: #FDD2A0"></td>
         </tr>
         <tr>
         <td class="legendItemHeader">10 - 20</td>
-        <td class="legendItemValue" style="background: #FE8800"></td>
+        <td class="legendItemValue" style="background: #E64B45"></td>
         </tr>
         <tr>
         <td class="legendItemHeader">20 - 30</td>
-        <td class="legendItemValue" style="background: #FF0000"></td>
+        <td class="legendItemValue" style="background: #BD1316"></td>
         </tr>
         <tr>
         <td class="legendItemHeader"> > 30</td>
-        <td class="legendItemValue" style="background: #CC0000"></td>
+        <td class="legendItemValue" style="background: #7F1100"></td>
         </tr>
         </table>
         </div>
@@ -111,7 +111,21 @@
           
       
             map = new SuperMap.Map("map",{controls: [],});
-       
+            labelLayer = new SuperMap.Layer.Vector("Label");
+
+
+            var strategy = new SuperMap.Strategy.GeoText();
+            strategy.style = {
+                fontColor:"#000000",
+                fontWeight:"bolder",
+                fontSize:"30px",
+                fill: false,
+                
+                stroke: false,
+               
+            };
+            var labelLayer = new SuperMap.Layer.Vector("Label",{strategies: [strategy]});
+
               
 		    vectorLayer = new SuperMap.Layer.Vector("Vector Layer");
             layer = new SuperMap.Layer.TiledDynamicRESTLayer("China",url, {transparent: true, cacheEnabled: true, redirect: false}, {maxResolution:"auto"});
@@ -134,7 +148,7 @@
                     data=data.areaTree[0].children[11].children;
                 }
             });
-             var selectControl = new SuperMap.Control.SelectFeature(vectorLayer, {
+             var selectControl = new SuperMap.Control.SelectFeature([vectorLayer,labelLayer], {
                 onSelect: onFeatureSelect
             });
             map.addControl(selectControl);
@@ -142,41 +156,41 @@
 
             function addLayer() {
                 var center = new SuperMap.LonLat(12964084.1 , 4906087.1);
-                map.addLayers([layer,vectorLayer]);
+                map.addLayers([layer,vectorLayer,labelLayer]);
                 map.setCenter(center, 0.1);
             }
             // 风格数组，设定分段范围对应的样式
             style1 = {
                
-                strokeColor: "#bbc4c7",
+                strokeColor: "#6C7273",
                 strokeWidth: 1,
                 fillColor: "#FFFFFF",
-                fillOpacity: "0.8"
+                fillOpacity: "1"
             },
             style2 = {
                 
-                strokeColor: "#bbc4c7",
+                strokeColor: "#6C7273",
                 strokeWidth: 1,
-                fillColor: "#FBD12A",
-                fillOpacity: "0.8"
+                fillColor: "#FDD2A0",
+                fillOpacity: "1"
             },
             style3 = {
-                strokeColor: "#FE8800",
+                strokeColor: "#6C7273",
                 strokeWidth: 1,
-                fillColor: "#FE8800",
-                fillOpacity: "0.8"
+                fillColor: "#E64B45",
+                fillOpacity: "1"
             },
             style4 = {
-                strokeColor: "#FF0000",
+                strokeColor: "#6C7273",
                 strokeWidth: 1,
-                fillColor: "#FF0000",
-                fillOpacity: "0.8"
+                fillColor: "#BD1316",
+                fillOpacity: "1"
             },
             style5 = {
-                strokeColor: "#CC0000",
+                strokeColor: "#6C7273",
                 strokeWidth: 1,
-                fillColor: "#CC0000",
-                fillOpacity: "0.8"
+                fillColor: "#7F1100",
+                fillOpacity: "1"
             },
             
 
@@ -208,13 +222,30 @@
                             for (j = 0; j < result.recordsets[i].features.length; j++) {
                                 feature = result.recordsets[i].features[j];
                                 setcolor(feature.data.NAME);
-                               // feature.style = style2;
                                 vectorLayer.addFeatures(feature);
                             }
                         }
                     }
-             
+             addlabel()
             }
+
+
+
+            function addlabel(){
+               var abelFeas=[]
+               //console.log(vectorLayer.features);
+               for (var i = 0; i < vectorLayer.features.length; i++) {
+                    var x=vectorLayer.features[i].geometry.bounds.right/2+vectorLayer.features[i].geometry.bounds.left/2;
+                    var y=vectorLayer.features[i].geometry.bounds.top/2+vectorLayer.features[i].geometry.bounds.bottom/2;
+                   var label = new SuperMap.Geometry.GeoText(x, y, vectorLayer.features[i].data.NAME);
+                   //var aa=SuperMap.Feature.ShapeParameters.Label(x, y, vectorLayer.features[i].data.NAME)
+                  // labelLayer.addFeatures(aa);
+                    abelFeas.push(new SuperMap.Feature.Vector(label, vectorLayer.features[i].data));
+                }
+                console.log()
+                labelLayer.addFeatures(abelFeas);
+            }
+
             function setcolor(NAME){
                 
 
