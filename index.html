@@ -224,6 +224,7 @@
                 map.removeLayer(heatMapLayer);
                 TouchNavigation.deactivate();
                 map.setCenter(center, 0.1);
+                $("#mapLegend").show();
             }
            
             var TouchNavigation = new SuperMap.Control.TouchNavigation({
@@ -241,6 +242,7 @@
                 map.removeLayer(vectorLayer);
                 map.removeLayer(labelLayer);
                 map.addLayers([markers,heatMapLayer]);
+                $("#mapLegend").hide();
  
             }
            
