@@ -119,7 +119,7 @@
         <div style="position: absolute;right: 0%;top: 30%;left: 0%;bottom: 64%;" >
 
 
-            <a class="pox" onclick="map_position()" style="right: 0%;left: 50%;background-color:#fff">确诊地点显示</a>
+            <a class="pox" onclick="map_position()" style="right: 0%;left: 50%;background-color:#fff">确诊小区显示</a>
             <a class="pox" onclick="map_con()" style="right: 50%;left: 0%;background-color:#fff">各区县确诊人数</a>
            
            
@@ -219,6 +219,7 @@
                 fillOpacity: "1"
             },
             map_con=  function (){
+                closeInfoWin();
                 map.addLayers([vectorLayer,labelLayer]);
                 map.removeLayer(markers);
                 map.removeLayer(heatMapLayer);
@@ -237,6 +238,7 @@
             map.addControl(TouchNavigation);
             TouchNavigation.deactivate();
             map_position = function (){
+                closeInfoWin();
                 set_xiaoqu(point);
                 TouchNavigation.activate();
                 map.removeLayer(vectorLayer);
@@ -409,6 +411,12 @@
                     //添加覆盖物到标记图层
                     markers.addMarker(marker);
 
+                    marker.sm_capital = point[i].attributes[2];
+                    marker.events.on({
+                        "click": openInfoWin,
+                        "touchstart": openInfoWin,        //假如要在移动端的浏览器也实现点击弹框，则在注册touch类事件
+                    });
+
 
 
                     heatPoints[i] = new SuperMap.Feature.Vector(
@@ -423,6 +431,25 @@
                    heatMapLayer.addFeatures(heatPoints);
 
            }
+            function openInfoWin() {
+                closeInfoWin();
+                var marker = this;
+                var lonlat = marker.getLonLat();
+                var contentHTML = "<div style='font-size:35px; opacity: 0.8; overflow-y:hidden;'>";
+                contentHTML += "<div>" + marker.sm_capital + "</div></div>";
+                var size = new SuperMap.Size(0, 33);
+                var offset = new SuperMap.Pixel(0, -size.h);
+                var icon = new SuperMap.Icon("./images/marker.png", size, offset);
+                var popup = new SuperMap.Popup.FramedCloud("popwin",
+                    new SuperMap.LonLat(lonlat.lon, lonlat.lat),
+                    null,
+                    contentHTML,
+                    icon,
+                    true);
+
+                infowin = popup;
+                map.addPopup(popup);
+            }
         
         </script>
     </body>
