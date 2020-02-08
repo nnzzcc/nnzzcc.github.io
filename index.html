@@ -53,9 +53,21 @@
             height: 200px;
             
         }
+        .pox{
+            position: absolute;
+            display: inline-block; /*一定要将div设置为inline-block*/
+            vertical-align: middle;/*设置该元素在父元素中的位置*/
+            line-height: 70px;
+            text-align: center;
+             font-size: 45px;
+             top: 0%;
+             bottom: 0%;
+        }
         </style>
         <script type="text/javascript" include="bootstrap,widgets.alert" src="js/include-web.js"></script>
         <script type="text/javascript" exclude="iclient-classic" include="nanoscroller,infoWindow" src="dist/classic/include-classic.js"></script>
+        <script type="text/javascript"  src="js/map-xiaoqu.js"></script>
+        <script type="text/javascript"  src="js/point_1.js"></script>
       
     </head>
     <body>
@@ -79,37 +91,45 @@
         </div>
 
         <div id="mapLegend" class="legend">
-        <div class="legendContent">
-        <table>
-        
-        <tr>
-        <td class="legendItemHeader">0</td>
-        <td class="legendItemValue" style="background: #FFFFFF"></td>
-        </tr>
-        <tr>
-        <td class="legendItemHeader">0-10</td>
-        <td class="legendItemValue" style="background: #FDD2A0"></td>
-        </tr>
-        <tr>
-        <td class="legendItemHeader">10 - 20</td>
-        <td class="legendItemValue" style="background: #E64B45"></td>
-        </tr>
-        <tr>
-        <td class="legendItemHeader">20 - 30</td>
-        <td class="legendItemValue" style="background: #BD1316"></td>
-        </tr>
-        <tr>
-        <td class="legendItemHeader"> > 30</td>
-        <td class="legendItemValue" style="background: #7F1100"></td>
-        </tr>
-        </table>
+            <div class="legendContent">
+               <table>
+                    <tr>
+                        <td class="legendItemHeader">0</td>
+                        <td class="legendItemValue" style="background: #FFFFFF"></td>
+                    </tr>
+                    <tr>
+                        <td class="legendItemHeader">0-10</td>
+                        <td class="legendItemValue" style="background: #FDD2A0"></td>
+                    </tr>
+                    <tr>
+                        <td class="legendItemHeader">10 - 20</td>
+                        <td class="legendItemValue" style="background: #E64B45"></td>
+                    </tr>
+                    <tr>
+                        <td class="legendItemHeader">20 - 30</td>
+                        <td class="legendItemValue" style="background: #BD1316"></td>
+                    </tr>
+                    <tr>
+                        <td class="legendItemHeader"> > 30</td>
+                        <td class="legendItemValue" style="background: #7F1100"></td>
+                    </tr>
+                </table>
+            </div>
         </div>
+        <div style="position: absolute;right: 0%;top: 30%;left: 0%;bottom: 64%;" >
+
+
+            <a class="pox" onclick="map_position()" style="right: 0%;left: 50%;background-color:#fff">确诊地点显示</a>
+            <a class="pox" onclick="map_con()" style="right: 50%;left: 0%;background-color:#fff">各区县确诊人数</a>
+           
+           
         </div>
+
         <script type="text/javascript">
             var map, layer,data,feature;
-            url="https://iserver.supermap.io/iserver/services/map-beijing/rest/maps/beijingMap";
-          
-      
+            var url="https://iserver.supermap.io/iserver/services/map-beijing/rest/maps/beijingMap";
+            var center = new SuperMap.LonLat(12964084.1 , 4906087.1);
+            var markers = new SuperMap.Layer.Markers("Markers");
             map = new SuperMap.Map("map",{controls: [],});
             labelLayer = new SuperMap.Layer.Vector("Label");
 
@@ -120,7 +140,6 @@
                 fontWeight:"bolder",
                 fontSize:"30px",
                 fill: false,
-                
                 stroke: false,
                
             };
@@ -128,7 +147,7 @@
 
               
 		    vectorLayer = new SuperMap.Layer.Vector("Vector Layer");
-            layer = new SuperMap.Layer.TiledDynamicRESTLayer("China",url, {transparent: true, cacheEnabled: true, redirect: false}, {maxResolution:"auto"});
+            layer = new SuperMap.Layer.TiledDynamicRESTLayer("beijing",url, {transparent: true, cacheEnabled: true, redirect: false}, {maxResolution:"auto"});
             layer.events.on({"layerInitialized": addLayer});
 
             $.ajax({
@@ -138,7 +157,7 @@
                 jsonp: 'callback',
                 success: (res) => {
                     data = JSON.parse(res.data);
-                    console.log(data.areaTree[0].children[11])
+                  //  console.log(data.areaTree[0])
                    
                    
                     $("#confirm").html(data.areaTree[0].children[11].total.confirm);
@@ -148,6 +167,13 @@
                     data=data.areaTree[0].children[11].children;
                 }
             });
+
+             var heatMapLayer = new SuperMap.Layer.HeatMapFastLayer(
+                "heatMap",
+                {
+                    "featureWeight": "value"
+                }
+            );
              var selectControl = new SuperMap.Control.SelectFeature([vectorLayer,labelLayer], {
                 onSelect: onFeatureSelect
             });
@@ -155,7 +181,7 @@
             selectControl.activate();
 
             function addLayer() {
-                var center = new SuperMap.LonLat(12964084.1 , 4906087.1);
+                
                 map.addLayers([layer,vectorLayer,labelLayer]);
                 map.setCenter(center, 0.1);
             }
@@ -192,10 +218,32 @@
                 fillColor: "#7F1100",
                 fillOpacity: "1"
             },
-            
-
-
-            queryBySQL()
+            map_con=  function (){
+                map.addLayers([vectorLayer,labelLayer]);
+                map.removeLayer(markers);
+                map.removeLayer(heatMapLayer);
+                TouchNavigation.deactivate();
+                map.setCenter(center, 0.1);
+            }
+           
+            var TouchNavigation = new SuperMap.Control.TouchNavigation({
+                    dragPanOptions: {
+                        enableKinetic: true
+                    }
+            })
+            queryBySQL();
+            markerandheatmap();
+            map.addControl(TouchNavigation);
+            TouchNavigation.deactivate();
+            map_position = function (){
+                set_xiaoqu(point);
+                TouchNavigation.activate();
+                map.removeLayer(vectorLayer);
+                map.removeLayer(labelLayer);
+                map.addLayers([markers,heatMapLayer]);
+ 
+            }
+           
             function queryBySQL() {
                 
 
@@ -215,7 +263,7 @@
              function processCompleted(queryEventArgs) {
                 var i, j,
                     result = queryEventArgs.result;
-                    console.log(result)
+                   // console.log(result)
                  
                     for (i = 0; i < result.recordsets.length; i++) {
                         if (result.recordsets[i].features) {
@@ -242,7 +290,6 @@
                   // labelLayer.addFeatures(aa);
                     abelFeas.push(new SuperMap.Feature.Vector(label, vectorLayer.features[i].data));
                 }
-                console.log()
                 labelLayer.addFeatures(abelFeas);
             }
 
@@ -260,7 +307,7 @@
                     NAME='密云区'
                 }
                 NAME = NAME.substring(0, NAME.lastIndexOf('区'));
-               console.log(NAME)
+               //console.log(NAME)
                 var people;
                 if(NAME=="崇文"){
                     NAME='东城'
@@ -303,7 +350,7 @@
 
             function onFeatureSelect(feature) {
                 closeInfoWin();
-                console.log(feature)
+               // console.log(feature)
                 var p=setcolor(feature.data.NAME)
                 var name_qu=feature.data.NAME
                 if(name_qu=="崇文区"){
@@ -330,7 +377,7 @@
                 map.addPopup(popup);
                 //添加弹窗到map图层
                 
-                var center = new SuperMap.LonLat(12964084.1 , 4906087.1);
+               
                 map.setCenter(center, 0.1);
                
             }
@@ -346,7 +393,35 @@
                     }
                 }
            }
+           function clear_all(){
+    
+           }
+           function markerandheatmap(){
+                 var heatPoints=[];
+                for (var i = 0 ; i < point.length ; i++) {
+                   var size = new SuperMap.Size(40, 50);
+                   var offset = new SuperMap.Pixel(-(size.w / 2), -size.h);
+                   var icon = new SuperMap.Icon('dist/face.png', size, offset);
+                    //初始化标记覆盖物类
+                   var  marker = new SuperMap.Marker(new SuperMap.LonLat(point[i].geometry.Point[0], point[i].geometry.Point[1]), icon);
+                    //添加覆盖物到标记图层
+                    markers.addMarker(marker);
 
+
+
+                    heatPoints[i] = new SuperMap.Feature.Vector(
+                        new SuperMap.Geometry.Point(point[i].geometry.Point[0], point[i].geometry.Point[1]),
+                        {
+                        "value": 1
+                        }
+                    );
+                   
+                }
+
+                   heatMapLayer.addFeatures(heatPoints);
+
+           }
+        
         </script>
     </body>
 </html>
