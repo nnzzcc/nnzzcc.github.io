@@ -16,6 +16,39 @@
    })*/
 
  }
+
+ // 风格数组，设定分段范围对应的样式
+var style1 = {
+    strokeColor: "#6C7273",
+    strokeWidth: 1,
+    fillColor: "#FFFFFF",
+    fillOpacity: "1"
+},
+style2 = {
+    
+    strokeColor: "#6C7273",
+    strokeWidth: 1,
+    fillColor: "#FDD2A0",
+    fillOpacity: "1"
+},
+style3 = {
+    strokeColor: "#6C7273",
+    strokeWidth: 1,
+    fillColor: "#E64B45",
+    fillOpacity: "1"
+},
+style4 = {
+    strokeColor: "#6C7273",
+    strokeWidth: 1,
+    fillColor: "#BD1316",
+    fillOpacity: "1"
+},
+style5 = {
+    strokeColor: "#6C7273",
+    strokeWidth: 1,
+    fillColor: "#7F1100",
+    fillOpacity: "1"
+}
  function clear_all(){
  	
  }

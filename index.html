@@ -147,6 +147,7 @@
 
               
 		    vectorLayer = new SuperMap.Layer.Vector("Vector Layer");
+            vectorLayer2 = new SuperMap.Layer.Vector("Vector Layer");
             layer = new SuperMap.Layer.TiledDynamicRESTLayer("beijing",url, {transparent: true, cacheEnabled: true, redirect: false}, {maxResolution:"auto"});
             layer.events.on({"layerInitialized": addLayer});
 
@@ -157,7 +158,7 @@
                 jsonp: 'callback',
                 success: (res) => {
                     data = JSON.parse(res.data);
-                  //  console.log(data.areaTree[0])
+                    console.log(data.areaTree[0])
                    
                    
                     $("#confirm").html(data.areaTree[0].children[11].total.confirm);
@@ -180,44 +181,27 @@
             map.addControl(selectControl);
             selectControl.activate();
 
+
+            var geolocate = new SuperMap.Control.Geolocate({
+                bind: false,
+                geolocationOptions: {
+                    enableHighAccuracy: false,
+                    maximumAge: 0
+                },
+                eventListeners: {
+                    "locationupdated": getGeolocationCompleted,
+                    "locationfailed": getGeolocationFailed
+                }
+            });
+            //添加定位控件
+            map.addControl(geolocate);
+
             function addLayer() {
                 
-                map.addLayers([layer,vectorLayer,labelLayer]);
+                map.addLayers([layer,vectorLayer2,vectorLayer,labelLayer]);
                 map.setCenter(center, 0.1);
             }
-            // 风格数组，设定分段范围对应的样式
-            style1 = {
-               
-                strokeColor: "#6C7273",
-                strokeWidth: 1,
-                fillColor: "#FFFFFF",
-                fillOpacity: "1"
-            },
-            style2 = {
-                
-                strokeColor: "#6C7273",
-                strokeWidth: 1,
-                fillColor: "#FDD2A0",
-                fillOpacity: "1"
-            },
-            style3 = {
-                strokeColor: "#6C7273",
-                strokeWidth: 1,
-                fillColor: "#E64B45",
-                fillOpacity: "1"
-            },
-            style4 = {
-                strokeColor: "#6C7273",
-                strokeWidth: 1,
-                fillColor: "#BD1316",
-                fillOpacity: "1"
-            },
-            style5 = {
-                strokeColor: "#6C7273",
-                strokeWidth: 1,
-                fillColor: "#7F1100",
-                fillOpacity: "1"
-            },
+            
             map_con=  function (){
                 closeInfoWin();
                 map.addLayers([vectorLayer,labelLayer]);
@@ -245,6 +229,11 @@
                 map.removeLayer(labelLayer);
                 map.addLayers([markers,heatMapLayer]);
                 $("#mapLegend").hide();
+                if (!geolocate.active) {
+                    geolocate.activate();
+                }
+                geolocate.getCurrentLocation();
+            
  
             }
            
@@ -450,7 +439,28 @@
                 infowin = popup;
                 map.addPopup(popup);
             }
-        
+
+
+
+    function getGeolocationCompleted(event) {
+        var a=12950144.2002645820-12950891.2991603;
+        var b=4854448.0460963079-4852213.0131081454;
+        var center2 = new SuperMap.LonLat(event.point.x+a,event.point.y+b);
+        map.setCenter(center2, 5);
+                
+        var point = new SuperMap.Geometry.Point(event.point.x+a,event.point.y+b);
+            var pointVector = new SuperMap.Feature.Vector(point);
+            pointVector.style = {
+                fillColor: "blue",
+                strokeColor: "yellow",
+                pointRadius: 10
+            };
+        vectorLayer2.addFeatures(pointVector);
+
+    }
+    function getGeolocationFailed(event) {
+        widgets.alert.showAlert("获取位置失败",false,350);
+    }
         </script>
     </body>
 </html>
