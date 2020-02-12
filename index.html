@@ -159,14 +159,20 @@
                 success: (res) => {
                     data = JSON.parse(res.data);
                     console.log(data.areaTree[0])
-                   
-                   
-                    $("#confirm").html(data.areaTree[0].children[11].total.confirm);
-                    $("#suspect").html(data.areaTree[0].children[11].total.suspect);
-                    $("#dead").html(data.areaTree[0].children[11].total.dead);
-                    $("#heal").html(data.areaTree[0].children[11].total.heal);
-                    data=data.areaTree[0].children[11].children;
+                    var bjdata;
+                    for (var i = data.areaTree[0].children.length - 1; i >= 0; i--) {
+                        if(data.areaTree[0].children[i].name=="北京" ){
+                            bjdata=data.areaTree[0].children[i];
+                        }
+                    }
+                    console.log(bjdata);
+                    data=bjdata.children;
+                    $("#confirm").html(bjdata.total.confirm);
+                    $("#suspect").html(bjdata.total.suspect);
+                    $("#dead").html(bjdata.total.dead);
+                    $("#heal").html(bjdata.total.heal);
                 }
+                   
             });
 
              var heatMapLayer = new SuperMap.Layer.HeatMapFastLayer(
@@ -445,7 +451,10 @@
     function getGeolocationCompleted(event) {
         var a=12950144.2002645820-12950891.2991603;
         var b=4854448.0460963079-4852213.0131081454;
+
+        
         var center2 = new SuperMap.LonLat(event.point.x+a,event.point.y+b);
+
         map.setCenter(center2, 5);
                 
         var point = new SuperMap.Geometry.Point(event.point.x+a,event.point.y+b);
